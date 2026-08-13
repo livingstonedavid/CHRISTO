@@ -1,0 +1,1408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>CHRISTO — Crafted for the unforgettable.</title>
+<meta name="description" content="CHRISTO — womenswear. Handwoven sarees, lehengas, tailoring and objects. Atelier in Hitech City, Mancherial, Telangana. By appointment.">
+<meta name="theme-color" content="#1D100B">
+<meta property="og:type" content="website">
+<meta property="og:title" content="CHRISTO — Crafted for the unforgettable.">
+<meta property="og:description" content="Womenswear. Drape, tailoring and objects, made by hand.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%231D100B'/%3E%3Ctext x='32' y='44' font-family='Georgia,serif' font-size='40' fill='%23F5EBDD' text-anchor='middle'%3EC%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   CHRISTO — tokens
+   ============================================================ */
+:root{
+  --cream:#F5EBDD;
+  --ivory:#FFF9F0;
+  --sand:#C49A7A;
+  --caramel:#A87958;
+  --brown:#6F4937;
+  --choc:#3A2118;
+  --espresso:#1D100B;
+
+  --bg:#F5EBDD;
+  --ink:#1D100B;
+
+  --display:"Bodoni Moda","Didot","Bodoni MT",Didot,"Times New Roman",serif;
+  --ui:"Inter","Helvetica Neue",Helvetica,Arial,sans-serif;
+
+  --pad:clamp(18px,4vw,64px);
+  --label:clamp(9px,.72vw,11px);
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+
+*,*::before,*::after{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+html{-webkit-text-size-adjust:100%;}
+body{
+  background:var(--espresso);
+  color:var(--ink);
+  font-family:var(--ui);
+  font-weight:300;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+body.lock{overflow:hidden;height:100vh;}
+img{max-width:100%;display:block;}
+a{color:inherit;text-decoration:none;}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;}
+::selection{background:var(--choc);color:var(--ivory);}
+
+/* fixed morphing environment ------------------------------- */
+#env{
+  position:fixed;inset:0;z-index:0;
+  background:var(--bg);
+  will-change:background-color;
+}
+#env::after{ /* soft key light, gives every scene a lit stage */
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(120% 80% at 50% 0%,rgba(255,249,240,.22),transparent 62%),
+             radial-gradient(90% 60% at 50% 110%,rgba(29,16,11,.20),transparent 60%);
+  mix-blend-mode:soft-light;
+}
+#page{position:relative;z-index:1;}
+
+/* grain ----------------------------------------------------- */
+.grain{
+  position:fixed;inset:-120px;z-index:90;pointer-events:none;
+  opacity:.16;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='220' height='220' filter='url(%23n)' opacity='.55'/></svg>");
+  animation:grain 1.1s steps(4) infinite;
+}
+@keyframes grain{
+  0%{transform:translate3d(0,0,0)}25%{transform:translate3d(-38px,14px,0)}
+  50%{transform:translate3d(22px,-30px,0)}75%{transform:translate3d(-12px,26px,0)}
+  100%{transform:translate3d(0,0,0)}
+}
+
+/* type utilities -------------------------------------------- */
+.label{
+  font-size:var(--label);letter-spacing:.34em;text-transform:uppercase;
+  font-weight:400;opacity:.62;
+}
+.serif{font-family:var(--display);font-weight:400;}
+.line{overflow:hidden;display:block;}
+.line > span{display:block;will-change:transform;}
+
+/* ============================================================
+   LOADER
+   ============================================================ */
+#loader{
+  position:fixed;inset:0;z-index:100;background:var(--espresso);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:26px;color:var(--cream);
+}
+#loader .mark{
+  font-family:var(--display);font-size:clamp(30px,6vw,64px);
+  letter-spacing:.42em;text-indent:.42em;display:flex;overflow:hidden;
+}
+#loader .mark span{display:block;transform:translateY(110%);}
+#loader .bar{width:min(280px,42vw);height:1px;background:rgba(245,235,221,.18);overflow:hidden;}
+#loader .bar i{display:block;height:100%;width:100%;background:var(--cream);transform:scaleX(0);transform-origin:0 50%;}
+#loader .pct{font-size:var(--label);letter-spacing:.3em;opacity:.5;}
+.curtain{position:fixed;inset:0;z-index:99;background:var(--espresso);transform-origin:50% 100%;pointer-events:none;}
+
+/* ============================================================
+   CURSOR
+   ============================================================ */
+.cursor{
+  position:fixed;top:0;left:0;z-index:95;pointer-events:none;
+  width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;
+  border:1px solid var(--ink);mix-blend-mode:difference;
+  display:none;
+}
+.cursor .cur-in{
+  position:absolute;inset:-1px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--cream);color:var(--espresso);
+  font-size:9px;letter-spacing:.24em;text-transform:uppercase;
+  opacity:0;transform:scale(.2);
+}
+body.has-cursor .cursor{display:block;}
+body.has-cursor a,body.has-cursor button,body.has-cursor .item{cursor:none;}
+body.has-cursor{cursor:none;}
+
+/* ============================================================
+   NAV
+   ============================================================ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:80;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:clamp(16px,2.4vw,30px) var(--pad);
+  color:var(--ink);mix-blend-mode:normal;
+}
+nav .brand{font-family:var(--display);font-size:15px;letter-spacing:.5em;text-indent:.5em;}
+nav ul{display:flex;gap:clamp(18px,2.6vw,40px);list-style:none;margin:0;padding:0;}
+nav ul a{font-size:var(--label);letter-spacing:.26em;text-transform:uppercase;opacity:.7;position:relative;}
+nav ul a::after{
+  content:"";position:absolute;left:0;bottom:-6px;height:1px;width:100%;
+  background:currentColor;transform:scaleX(0);transform-origin:0 50%;
+  transition:transform .6s var(--ease);
+}
+nav ul a:hover::after{transform:scaleX(1);}
+nav .util{display:flex;gap:clamp(14px,2vw,28px);font-size:var(--label);letter-spacing:.26em;text-transform:uppercase;}
+nav .util span{opacity:.7;}
+.progress{
+  position:fixed;left:0;top:0;height:1px;z-index:85;width:100%;
+  background:currentColor;color:var(--ink);opacity:.28;
+  transform:scaleX(0);transform-origin:0 50%;
+}
+@media(max-width:860px){ nav ul{display:none;} }
+
+/* ============================================================
+   GENERATED IMAGERY — "plates"
+   Layered gradients standing in for campaign photography.
+   ============================================================ */
+.plate{position:relative;overflow:hidden;background:var(--brown);isolation:isolate;}
+.plate .surf{position:absolute;inset:0;will-change:transform;}
+.plate .surf::after{ /* fine weave */
+  content:"";position:absolute;inset:0;opacity:.30;mix-blend-mode:overlay;
+  background:repeating-linear-gradient(38deg,rgba(255,249,240,.10) 0 1px,transparent 1px 4px),
+             repeating-linear-gradient(-52deg,rgba(29,16,11,.12) 0 1px,transparent 1px 5px);
+}
+.plate .glare{
+  position:absolute;inset:-20%;pointer-events:none;
+  background:linear-gradient(112deg,transparent 34%,rgba(255,249,240,.20) 47%,transparent 58%);
+  mix-blend-mode:screen;opacity:.7;
+}
+.plate .vig{position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(120% 90% at 50% 20%,transparent 40%,rgba(29,16,11,.42));}
+
+.sprite{position:absolute;width:0;height:0;overflow:hidden;}
+.plate .figure{
+  position:absolute;inset:0;width:100%;height:100%;z-index:1;
+  transform-origin:50% 100%;will-change:transform;
+}
+.plate .shot{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  z-index:2;opacity:0;transition:opacity 1.1s var(--ease);
+  transform-origin:50% 50%;will-change:transform,opacity;
+}
+.plate .shot.is-loaded{opacity:1;}
+.plate .shot{filter:saturate(.72) sepia(.16) contrast(1.06) brightness(.97);}
+.plate.has-shot::after{
+  content:"";position:absolute;inset:0;z-index:3;pointer-events:none;
+  background:linear-gradient(180deg,rgba(58,33,24,.18),rgba(29,16,11,.34));
+  mix-blend-mode:multiply;
+}
+.plate.has-shot .figure{opacity:0;}
+.plate .glare{z-index:3;}
+.plate .vig{z-index:4;}
+.plate .cap{z-index:5;}
+
+/* silk drape */
+.s-silk{background:
+  linear-gradient(196deg,rgba(255,249,240,.55) 0%,transparent 42%),
+  linear-gradient(72deg,rgba(29,16,11,.55) 0 12%,transparent 34%),
+  repeating-linear-gradient(100deg,rgba(255,249,240,.13) 0 14px,rgba(29,16,11,.16) 26px,transparent 46px),
+  radial-gradient(90% 70% at 30% 25%,#C49A7A,#6F4937 58%,#2C190F);}
+/* raw leather */
+.s-hide{background:
+  radial-gradient(70% 55% at 65% 30%,rgba(255,249,240,.30),transparent 60%),
+  repeating-radial-gradient(circle at 40% 60%,rgba(29,16,11,.16) 0 3px,transparent 3px 9px),
+  linear-gradient(160deg,#7A5238,#3A2118 72%,#1D100B);}
+/* cream cashmere */
+.s-cash{background:
+  linear-gradient(158deg,#FFF9F0,#F0DFC9 46%,#C49A7A 96%),
+  repeating-linear-gradient(122deg,rgba(29,16,11,.05) 0 2px,transparent 2px 7px);}
+/* smoke / atelier */
+.s-smoke{background:
+  radial-gradient(60% 45% at 30% 20%,rgba(255,249,240,.42),transparent 62%),
+  conic-gradient(from 200deg at 60% 60%,#3A2118,#6F4937,#1D100B,#3A2118);}
+/* polished bronze */
+.s-bronze{background:
+  linear-gradient(100deg,#1D100B 0 8%,#A87958 22%,#FFF9F0 34%,#A87958 46%,#3A2118 62%,#C49A7A 78%,#1D100B 100%);}
+/* dune */
+.s-dune{background:
+  linear-gradient(200deg,#F5EBDD 0 24%,#C49A7A 52%,#6F4937 78%,#2A170F),
+  repeating-linear-gradient(85deg,rgba(29,16,11,.08) 0 6px,transparent 6px 18px);}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero{height:100vh;position:relative;overflow:hidden;perspective:1400px;}
+.hero-inner{position:absolute;inset:0;transform-style:preserve-3d;}
+
+.hero-brand{
+  position:absolute;left:50%;top:clamp(94px,15vh,180px);
+  transform:translateX(-50%);
+  font-family:var(--display);font-weight:400;
+  font-size:clamp(62px,17vw,300px);line-height:.8;
+  letter-spacing:-.03em;white-space:nowrap;
+  z-index:2;will-change:transform;
+}
+.hero-brand em{font-style:normal;display:inline-block;}
+
+.stage{
+  position:absolute;left:50%;top:56%;transform:translate(-50%,-50%);
+  width:min(46vh,74vw);z-index:3;transform-style:preserve-3d;will-change:transform;
+}
+.tilt{transform-style:preserve-3d;will-change:transform;}
+.obj{position:relative;transform-style:preserve-3d;will-change:transform;}
+.obj svg{display:block;width:100%;height:auto;filter:drop-shadow(0 40px 60px rgba(29,16,11,.38));}
+.obj .echo{
+  position:absolute;inset:0;transform:translateZ(-160px) scale(1.06);
+  filter:blur(18px) saturate(.7);opacity:.42;
+}
+.obj-shadow{
+  position:absolute;left:50%;bottom:-7%;width:76%;height:5%;
+  transform:translateX(-50%) translateZ(-120px);
+  background:radial-gradient(50% 50% at 50% 50%,rgba(29,16,11,.55),transparent 70%);
+  filter:blur(10px);
+}
+.hero-plate{
+  position:absolute;left:6vw;top:50%;width:min(26vw,320px);height:min(62vh,560px);
+  transform:translateY(-50%);z-index:2;opacity:0;will-change:transform,opacity;
+}
+
+.hero-head{
+  position:absolute;left:var(--pad);bottom:clamp(96px,16vh,170px);
+  z-index:4;max-width:min(560px,60vw);will-change:transform,opacity;
+}
+.hero-head h1{
+  font-family:var(--display);font-weight:400;margin:0;
+  font-size:clamp(30px,4.2vw,64px);line-height:.98;letter-spacing:-.02em;
+}
+.hero-head .sub{margin-top:18px;max-width:34ch;font-size:13px;line-height:1.7;opacity:.62;}
+
+.cta{
+  position:absolute;right:var(--pad);bottom:clamp(96px,16vh,170px);z-index:5;
+  display:inline-flex;align-items:center;gap:14px;
+  padding:18px 30px;border:1px solid currentColor;border-radius:999px;
+  font-size:var(--label);letter-spacing:.28em;text-transform:uppercase;
+  will-change:transform;overflow:hidden;
+}
+.cta .fill{position:absolute;inset:0;background:currentColor;transform:scaleY(0);transform-origin:50% 100%;transition:transform .7s var(--ease);}
+.cta span,.cta svg{position:relative;z-index:1;transition:color .5s var(--ease);}
+.cta:hover .fill{transform:scaleY(1);}
+.cta:hover span,.cta:hover svg{color:var(--bg);}
+.cta svg{transition:transform .6s var(--ease);}
+.cta:hover svg{transform:translateX(6px);}
+
+.cue{
+  position:absolute;left:50%;bottom:34px;transform:translateX(-50%);z-index:5;
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+}
+.cue .rail{width:1px;height:52px;background:currentColor;opacity:.25;position:relative;overflow:hidden;}
+.cue .rail i{position:absolute;inset:0;background:currentColor;animation:drop 2.2s var(--ease) infinite;}
+@keyframes drop{0%{transform:translateY(-100%)}60%,100%{transform:translateY(100%)}}
+.hero-meta{position:absolute;left:var(--pad);top:clamp(96px,14vh,150px);z-index:4;}
+.hero-meta div+div{margin-top:6px;}
+
+/* ============================================================
+   DETAIL
+   ============================================================ */
+.detail{position:relative;padding:22vh 0 26vh;overflow:hidden;}
+.detail-title{
+  font-family:var(--display);font-size:clamp(54px,13vw,210px);line-height:.82;
+  letter-spacing:-.035em;margin:0 0 -6vh;padding-left:var(--pad);
+  white-space:nowrap;will-change:transform;position:relative;z-index:3;
+}
+.detail-grid{
+  position:relative;display:grid;grid-template-columns:repeat(12,1fr);
+  gap:24px;padding:0 var(--pad);align-items:start;
+}
+.detail-a{grid-column:2/8;height:min(96vh,860px);z-index:2;}
+.detail-b{grid-column:8/12;height:min(46vh,420px);margin-top:34vh;z-index:1;opacity:.9;}
+.detail-copy{grid-column:9/13;margin-top:5vh;z-index:3;position:relative;}
+.detail-copy p{font-family:var(--display);font-size:clamp(17px,1.5vw,24px);line-height:1.5;margin:0 0 22px;}
+.detail-copy .meta{display:flex;flex-direction:column;gap:7px;margin-top:34px;}
+.detail-copy .meta i{font-style:normal;display:flex;justify-content:space-between;gap:20px;
+  border-top:1px solid currentColor;padding-top:8px;opacity:.55;font-size:var(--label);
+  letter-spacing:.24em;text-transform:uppercase;}
+
+/* ============================================================
+   REVEAL — small image → fullscreen
+   ============================================================ */
+.reveal{height:100vh;position:relative;overflow:hidden;}
+.reveal-frame{
+  position:absolute;left:50%;top:50%;width:100vw;height:100vh;
+  transform:translate(-50%,-50%) scale(.26);will-change:transform;
+}
+.reveal-cap{
+  position:absolute;left:50%;top:calc(50% + 20vh);transform:translateX(-50%);
+  z-index:4;text-align:center;
+}
+.reveal-head{
+  position:absolute;inset:0;z-index:5;display:flex;align-items:center;justify-content:center;
+  pointer-events:none;
+}
+.reveal-head h2{
+  font-family:var(--display);font-size:clamp(46px,11vw,170px);line-height:.86;
+  letter-spacing:-.03em;text-align:center;margin:0;color:var(--ivory);
+  mix-blend-mode:difference;
+}
+
+/* ============================================================
+   COLLECTION
+   ============================================================ */
+.collection{padding:20vh var(--pad) 12vh;position:relative;}
+.col-head{display:flex;justify-content:space-between;align-items:baseline;
+  border-bottom:1px solid currentColor;padding-bottom:16px;margin-bottom:8vh;opacity:.85;}
+.item{
+  display:grid;grid-template-columns:1fr auto;align-items:end;gap:20px;
+  border-bottom:1px solid currentColor;padding:clamp(20px,3.4vw,46px) 0;
+  position:relative;will-change:transform;
+}
+.item .idx{font-size:var(--label);letter-spacing:.3em;opacity:.5;margin-bottom:14px;}
+.item h3{
+  font-family:var(--display);font-weight:400;margin:0;
+  font-size:clamp(34px,7vw,104px);line-height:.9;letter-spacing:-.03em;
+  transition:transform .8s var(--ease),opacity .8s var(--ease);
+}
+.item .kind{font-size:var(--label);letter-spacing:.26em;text-transform:uppercase;opacity:.5;}
+.item .peek{
+  position:absolute;right:14vw;top:50%;width:clamp(170px,17vw,280px);height:clamp(220px,23vw,360px);
+  transform:translate(0,-50%) scale(.86);opacity:0;pointer-events:none;z-index:4;
+  will-change:transform,opacity;
+}
+@media(hover:hover){ .item:hover h3{transform:translateX(2.2vw);} }
+/* mobile: no hover, so the campaign shot sits in the row itself */
+@media(max-width:760px){
+  .item .peek{
+    position:relative;right:auto;top:auto;
+    width:100%;height:62vw;margin-top:20px;
+    transform:none;opacity:1;grid-column:1/-1;
+  }
+}
+
+/* ============================================================
+   HORIZONTAL
+   ============================================================ */
+.horizontal{height:100vh;overflow:hidden;position:relative;}
+.h-track{display:flex;height:100vh;align-items:center;gap:clamp(24px,5vw,90px);
+  padding:0 max(var(--pad),8vw);will-change:transform;}
+.h-panel{position:relative;flex:0 0 auto;width:clamp(260px,34vw,520px);height:min(72vh,700px);}
+.h-panel:nth-child(even){height:min(56vh,540px);align-self:flex-start;margin-top:16vh;}
+.h-panel .cap{position:absolute;left:0;bottom:-34px;display:flex;justify-content:space-between;width:100%;
+  font-size:var(--label);letter-spacing:.24em;text-transform:uppercase;opacity:.55;}
+.h-word{
+  position:absolute;left:0;top:50%;z-index:3;pointer-events:none;
+  font-family:var(--display);font-size:clamp(80px,20vw,300px);line-height:.8;
+  letter-spacing:-.04em;white-space:nowrap;opacity:.14;transform:translateY(-50%);
+  will-change:transform;
+}
+.h-note{position:absolute;left:var(--pad);bottom:6vh;z-index:4;max-width:26ch;font-size:13px;line-height:1.7;opacity:.55;}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer{padding:24vh var(--pad) 40px;position:relative;}
+.f-mark{
+  font-family:var(--display);font-size:clamp(72px,21vw,340px);line-height:.78;
+  letter-spacing:-.04em;margin:0 0 14vh;display:flex;overflow:hidden;
+}
+.f-mark span{display:block;will-change:transform;}
+.f-rows{display:grid;grid-template-columns:repeat(4,1fr);gap:30px 24px;
+  border-top:1px solid currentColor;padding-top:26px;}
+.f-rows ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px;}
+.f-rows a{font-size:var(--label);letter-spacing:.24em;text-transform:uppercase;opacity:.62;transition:opacity .4s;}
+.f-rows a:hover{opacity:1;}
+.f-rows p{margin:0;font-size:13px;line-height:1.7;opacity:.55;max-width:30ch;}
+.f-contact{display:flex;flex-direction:column;gap:10px;}
+.f-contact .label{margin-bottom:2px;}
+.f-contact a{font-size:13px;line-height:1.6;opacity:.78;width:fit-content;position:relative;}
+.f-contact a::after{
+  content:"";position:absolute;left:0;bottom:-3px;height:1px;width:100%;
+  background:currentColor;transform:scaleX(0);transform-origin:0 50%;
+  transition:transform .6s var(--ease);
+}
+.f-contact a:hover{opacity:1;}
+.f-contact a:hover::after{transform:scaleX(1);}
+.f-contact address{font-style:normal;font-size:13px;line-height:1.7;opacity:.6;}
+.f-contact .hours{font-size:var(--label);letter-spacing:.24em;text-transform:uppercase;opacity:.42;}
+.f-base{display:flex;justify-content:space-between;margin-top:16vh;opacity:.45;}
+@media(max-width:860px){ .f-rows{grid-template-columns:repeat(2,1fr);} .f-base{flex-direction:column;gap:10px;} }
+
+/* ============================================================
+   RESPONSIVE RECOMPOSITION
+   ============================================================ */
+@media(max-width:1024px){
+  .detail-a{grid-column:1/9;height:min(70vh,640px);}
+  .detail-b{grid-column:8/13;margin-top:22vh;height:min(34vh,320px);}
+  .detail-copy{grid-column:1/9;margin-top:9vh;}
+}
+@media(max-width:760px){
+  .hero-brand{top:16vh;font-size:20vw;}
+  .stage{width:66vw;top:53%;}
+  .hero-head{bottom:14vh;max-width:78vw;}
+  .hero-head h1{font-size:31px;}
+  .cta{left:var(--pad);right:auto;bottom:7vh;padding:15px 22px;}
+  .cue{display:none;}
+  .hero-plate{left:-6vw;width:52vw;height:46vh;}
+  .detail-grid{gap:14px;}
+  .detail-a{grid-column:1/13;height:64vh;}
+  .detail-b{grid-column:5/13;height:26vh;margin-top:12vh;}
+  .detail-copy{grid-column:1/13;}
+  .item{grid-template-columns:1fr;align-items:start;}
+  .reveal-frame{transform:translate(-50%,-50%) scale(.4);}
+  .h-panel{width:70vw;height:56vh;}
+  .h-panel:nth-child(even){height:44vh;margin-top:8vh;}
+}
+@media(prefers-reduced-motion:reduce){
+  .grain{animation:none;}
+  .cue .rail i{animation:none;}
+}
+</style>
+</head>
+<body class="lock">
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="mark" id="loadMark"></div>
+  <div class="bar"><i></i></div>
+  <div class="pct" id="pct">000</div>
+</div>
+<div class="curtain" id="curtain"></div>
+
+<div class="grain"></div>
+<div class="cursor" id="cursor"><div class="cur-in" id="curIn">View</div></div>
+<div class="progress" id="progress"></div>
+
+<nav>
+  <a class="brand" href="#">CHRISTO</a>
+  <ul>
+    <li><a href="#collection">Collection</a></li>
+    <li><a href="#detail">Story</a></li>
+    <li><a href="#horizontal">Journal</a></li>
+    <li><a href="#footer">Contact</a></li>
+  </ul>
+  <div class="util"><span>Bag (0)</span><span>Menu</span></div>
+</nav>
+
+<div id="env"></div>
+
+<!-- ============================================================
+     CAMPAIGN FIGURES — drawn, not photographed. Tonal silhouettes
+     in the house palette so every look sits in the same light.
+     ============================================================ -->
+<svg class="sprite" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="gTone" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#F3E2CE"/><stop offset="34%" stop-color="#C49A7A"/>
+      <stop offset="72%" stop-color="#6F4937"/><stop offset="100%" stop-color="#2C190F"/>
+    </linearGradient>
+    <linearGradient id="gLight" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FFF9F0"/><stop offset="52%" stop-color="#EFDCC4"/>
+      <stop offset="100%" stop-color="#A87958"/>
+    </linearGradient>
+    <linearGradient id="gDark" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#6F4937"/><stop offset="46%" stop-color="#2C190F"/>
+      <stop offset="100%" stop-color="#120906"/>
+    </linearGradient>
+    <radialGradient id="gGlow" cx="50%" cy="34%" r="62%">
+      <stop offset="0%" stop-color="#FFF9F0" stop-opacity=".30"/>
+      <stop offset="100%" stop-color="#FFF9F0" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- 01 · ESSENTIAL FORM — the long coat, squared off, frontal -->
+  <symbol id="fig-coat" viewBox="0 0 400 620">
+    <ellipse cx="200" cy="292" rx="196" ry="272" fill="url(#gGlow)"/>
+    <ellipse cx="200" cy="600" rx="92" ry="13" fill="#1D100B" opacity=".38"/>
+    <path d="M180 428 L173 590 L197 590 L199 428 Z" fill="#2C190F"/>
+    <path d="M201 428 L203 590 L227 590 L220 428 Z" fill="#241409"/>
+    <path d="M168 590 H198 L200 604 H164 Z" fill="#120906"/>
+    <path d="M202 590 H232 L236 604 H200 Z" fill="#120906"/>
+    <path d="M172 106 C168 70 182 57 200 57 C220 57 233 71 229 106 C226 85 216 77 200 77 C184 77 175 85 172 106 Z" fill="#1D100B"/>
+    <ellipse cx="200" cy="102" rx="26" ry="33" fill="#3A2118"/>
+    <rect x="191" y="126" width="18" height="28" fill="#2C190F"/>
+    <path d="M200 150 C176 150 158 161 152 179 L130 470 L270 470 L248 179 C242 161 224 150 200 150 Z" fill="url(#gTone)"/>
+    <path d="M170 181 L154 466 L188 466 L188 181 Z" fill="#FFF9F0" opacity=".13"/>
+    <path d="M228 181 L232 466 L266 466 L250 181 Z" fill="#1D100B" opacity=".26"/>
+    <path d="M200 150 L174 200 L200 178 L226 200 Z" fill="#1D100B" opacity=".62"/>
+    <path d="M200 178 V470" stroke="#FFF9F0" stroke-opacity=".20" stroke-width="1.5"/>
+    <path d="M154 180 L139 354 C138 364 145 370 155 368 L171 364 L173 184 Z" fill="#3A2118" opacity=".55"/>
+    <path d="M246 180 L261 354 C262 364 255 370 245 368 L229 364 L227 184 Z" fill="#1D100B" opacity=".42"/>
+    <ellipse cx="149" cy="376" rx="10" ry="13" fill="#2C190F"/>
+    <ellipse cx="251" cy="376" rx="10" ry="13" fill="#241409"/>
+    <path d="M130 470 L270 470" stroke="#1D100B" stroke-opacity=".4" stroke-width="2"/>
+  </symbol>
+
+  <!-- 02 · SIGNATURE — tailoring, weight on one hip -->
+  <symbol id="fig-suit" viewBox="0 0 400 620">
+    <ellipse cx="200" cy="292" rx="196" ry="272" fill="url(#gGlow)"/>
+    <ellipse cx="202" cy="600" rx="86" ry="12" fill="#1D100B" opacity=".34"/>
+    <path d="M158 344 L168 590 H194 L200 372 L206 590 H232 L242 344 Z" fill="#3A2118"/>
+    <path d="M200 372 L194 590 H168 L162 400 Z" fill="#1D100B" opacity=".45"/>
+    <path d="M164 590 H196 L198 603 H160 Z" fill="#120906"/>
+    <path d="M204 590 H234 L238 603 H202 Z" fill="#120906"/>
+    <path d="M174 108 C170 74 183 60 200 60 C219 60 232 74 228 108 C224 88 215 80 200 80 C185 80 178 88 174 108 Z" fill="#1D100B"/>
+    <ellipse cx="201" cy="104" rx="25" ry="32" fill="#3A2118"/>
+    <rect x="192" y="128" width="17" height="26" fill="#2C190F"/>
+    <path d="M200 152 C179 152 161 162 155 178 L147 348 L253 348 L245 178 C239 162 221 152 200 152 Z" fill="url(#gLight)"/>
+    <path d="M200 152 L179 180 L196 258 L200 214 Z" fill="#A87958" opacity=".45"/>
+    <path d="M200 152 L221 180 L204 258 L200 214 Z" fill="#6F4937" opacity=".35"/>
+    <path d="M228 180 L236 344 L253 348 L245 178 Z" fill="#1D100B" opacity=".20"/>
+    <path d="M200 214 V348" stroke="#6F4937" stroke-opacity=".35" stroke-width="1.2"/>
+    <path d="M155 178 L142 320 C141 330 148 336 158 334 L170 330 L172 182 Z" fill="#EFDCC4"/>
+    <path d="M155 178 L142 320 L150 330 L156 186 Z" fill="#A87958" opacity=".35"/>
+    <path d="M246 180 L272 254 C276 266 270 278 260 284 L242 318 L232 306 L246 268 L228 200 Z" fill="#EFDCC4"/>
+    <path d="M258 262 L272 254 C276 266 270 278 260 284 Z" fill="#A87958" opacity=".4"/>
+    <ellipse cx="150" cy="342" rx="9" ry="12" fill="#2C190F"/>
+    <ellipse cx="238" cy="322" rx="9" ry="11" fill="#2C190F"/>
+  </symbol>
+
+  <!-- 03 · NOIR — evening, one arm raised, rim light on the left -->
+  <symbol id="fig-noir" viewBox="0 0 400 620">
+    <ellipse cx="200" cy="292" rx="196" ry="272" fill="url(#gGlow)"/>
+    <ellipse cx="200" cy="596" rx="104" ry="16" fill="#120906" opacity=".45"/>
+    <ellipse cx="200" cy="52" r="0" fill="none"/>
+    <circle cx="205" cy="60" r="15" fill="#1D100B"/>
+    <path d="M176 108 C172 76 185 62 202 62 C221 62 233 76 229 108 C225 88 216 80 202 80 C187 80 180 88 176 108 Z" fill="#120906"/>
+    <ellipse cx="201" cy="104" rx="24" ry="31" fill="#2C190F"/>
+    <rect x="193" y="128" width="16" height="24" fill="#241409"/>
+    <path d="M200 150 C182 150 169 162 167 180 L147 468 C142 520 151 560 161 592 L245 592 C257 558 263 518 258 468 L236 180 C233 162 218 150 200 150 Z" fill="url(#gDark)"/>
+    <path d="M167 180 L147 468 C142 520 151 560 161 592 L184 592 C173 556 166 514 170 466 L182 182 Z" fill="#F5EBDD" opacity=".16"/>
+    <path d="M167 182 L149 466 C144 518 152 558 162 590" stroke="#F5EBDD" stroke-opacity=".42" stroke-width="2" fill="none"/>
+    <path d="M232 190 L252 470 C256 516 250 556 240 588" stroke="#A87958" stroke-opacity=".28" stroke-width="1.5" fill="none"/>
+    <path d="M200 152 L186 186 L200 176 L214 186 Z" fill="#F5EBDD" opacity=".22"/>
+    <path d="M170 176 L136 116 L148 106 L184 166 Z" fill="#2C190F"/>
+    <path d="M170 176 L136 116 L142 112 L176 172 Z" fill="#F5EBDD" opacity=".24"/>
+    <ellipse cx="137" cy="102" rx="10" ry="13" fill="#3A2118" transform="rotate(-24 137 102)"/>
+    <path d="M234 184 L250 330 C251 342 244 350 234 350 L226 348 L228 188 Z" fill="#1D100B"/>
+    <ellipse cx="232" cy="356" rx="9" ry="12" fill="#241409"/>
+  </symbol>
+
+  <!-- 04 · ARCHIVE — seated on the plinth, turned away -->
+  <symbol id="fig-archive" viewBox="0 0 400 620">
+    <ellipse cx="200" cy="292" rx="196" ry="272" fill="url(#gGlow)"/>
+    <ellipse cx="204" cy="596" rx="118" ry="14" fill="#1D100B" opacity=".38"/>
+    <rect x="146" y="424" width="152" height="168" fill="#2C190F"/>
+    <rect x="146" y="424" width="152" height="10" fill="#C49A7A" opacity=".55"/>
+    <rect x="146" y="424" width="30" height="168" fill="#F5EBDD" opacity=".09"/>
+    <path d="M176 120 C172 88 185 74 202 74 C221 74 234 88 230 120 C226 100 217 92 202 92 C187 92 180 100 176 120 Z" fill="#1D100B"/>
+    <ellipse cx="203" cy="116" rx="25" ry="32" fill="#3A2118"/>
+    <rect x="194" y="140" width="17" height="24" fill="#2C190F"/>
+    <path d="M202 162 C182 162 168 174 166 192 L158 424 L252 424 L244 192 C242 174 222 162 202 162 Z" fill="url(#gTone)"/>
+    <path d="M172 194 L164 420 L196 420 L194 194 Z" fill="#FFF9F0" opacity=".12"/>
+    <path d="M228 194 L236 420 L252 424 L244 192 Z" fill="#1D100B" opacity=".24"/>
+    <path d="M166 192 L152 300 C150 312 157 320 167 320 L178 316 L180 196 Z" fill="#3A2118" opacity=".6"/>
+    <path d="M158 424 L104 452 L112 486 L166 460 Z" fill="#3A2118"/>
+    <path d="M104 452 L96 566 L124 568 L130 468 Z" fill="#2C190F"/>
+    <path d="M92 566 H126 L128 580 H88 Z" fill="#120906"/>
+    <path d="M252 424 L268 470 L262 566 L236 564 L240 452 Z" fill="#241409"/>
+    <path d="M232 564 H264 L266 578 H230 Z" fill="#120906"/>
+    <ellipse cx="172" cy="330" rx="10" ry="12" fill="#2C190F"/>
+    <path d="M146 424 H298" stroke="#1D100B" stroke-opacity=".5" stroke-width="2"/>
+  </symbol>
+
+  <!-- 05 · SAREE — pallu over the left shoulder, pleats to the floor -->
+  <symbol id="fig-saree" viewBox="0 0 400 620">
+    <ellipse cx="200" cy="292" rx="196" ry="272" fill="url(#gGlow)"/>
+    <ellipse cx="200" cy="598" rx="96" ry="14" fill="#1D100B" opacity=".38"/>
+    <circle cx="202" cy="70" r="17" fill="#1D100B"/>
+    <path d="M176 112 C172 78 185 64 202 64 C221 64 234 78 230 112 C226 90 217 82 202 82 C187 82 180 90 176 112 Z" fill="#120906"/>
+    <ellipse cx="201" cy="108" rx="25" ry="32" fill="#3A2118"/>
+    <circle cx="201" cy="92" r="2.6" fill="#F5EBDD" opacity=".7"/>
+    <rect x="192" y="132" width="18" height="24" fill="#2C190F"/>
+    <path d="M200 154 C184 154 172 162 170 176 L167 214 L235 214 L232 176 C230 162 216 154 200 154 Z" fill="#3A2118"/>
+    <path d="M200 206 C177 206 165 220 163 242 L145 470 C139 528 148 566 158 596 L248 596 C258 566 267 528 261 470 L239 242 C237 220 223 206 200 206 Z" fill="url(#gTone)"/>
+    <path d="M180 300 L170 592 M194 296 L192 594 M208 296 L212 594 M222 300 L232 592" stroke="#1D100B" stroke-opacity=".26" stroke-width="1.4" fill="none"/>
+    <path d="M186 250 L168 592 L198 594 L200 250 Z" fill="#FFF9F0" opacity=".13"/>
+    <path d="M152 572 C150 582 152 590 158 596 L248 596 C254 588 256 578 255 570 Z" fill="#A87958" opacity=".75"/>
+    <path d="M234 160 C252 172 260 194 256 220 L268 396 C271 428 262 452 244 472 L224 462 C240 442 248 420 246 396 L230 216 Z" fill="url(#gLight)" opacity=".95"/>
+    <path d="M234 160 C252 172 260 194 256 220 L268 396 C271 428 262 452 244 472" stroke="#A87958" stroke-opacity=".85" stroke-width="5" fill="none"/>
+    <path d="M244 472 L224 462 L228 476 L246 486 Z" fill="#6F4937" opacity=".7"/>
+    <path d="M168 176 L154 336 C153 348 160 356 170 354 L180 350 L182 182 Z" fill="#2C190F"/>
+    <path d="M156 322 H172 M155 330 H173" stroke="#F5EBDD" stroke-opacity=".5" stroke-width="2"/>
+    <ellipse cx="164" cy="362" rx="9" ry="12" fill="#241409"/>
+  </symbol>
+
+  <!-- 06 · LEHENGA — flared skirt, dupatta caught mid-air -->
+  <symbol id="fig-lehenga" viewBox="0 0 400 620">
+    <ellipse cx="200" cy="292" rx="196" ry="272" fill="url(#gGlow)"/>
+    <ellipse cx="200" cy="598" rx="112" ry="14" fill="#1D100B" opacity=".36"/>
+    <circle cx="204" cy="68" r="16" fill="#1D100B"/>
+    <path d="M176 110 C172 76 185 62 202 62 C221 62 234 76 230 110 C226 88 217 80 202 80 C187 80 180 88 176 110 Z" fill="#120906"/>
+    <ellipse cx="201" cy="106" rx="25" ry="32" fill="#3A2118"/>
+    <rect x="192" y="130" width="18" height="24" fill="#2C190F"/>
+    <path d="M200 152 C184 152 172 160 170 174 L168 212 L234 212 L232 174 C230 160 216 152 200 152 Z" fill="url(#gLight)"/>
+    <path d="M200 246 C182 246 174 256 170 272 L134 520 C130 552 136 576 146 596 L256 596 C266 576 272 552 268 520 L230 272 C226 256 218 246 200 246 Z" fill="url(#gTone)"/>
+    <path d="M186 262 L146 592 M196 260 L182 594 M206 260 L218 594 M216 262 L254 592" stroke="#1D100B" stroke-opacity=".24" stroke-width="1.5" fill="none"/>
+    <path d="M180 268 L140 560 L172 566 L192 268 Z" fill="#FFF9F0" opacity=".12"/>
+    <path d="M140 556 C136 572 140 586 148 596 L256 596 C264 584 266 570 263 556 Z" fill="#A87958" opacity=".8"/>
+    <path d="M141 566 H262" stroke="#F5EBDD" stroke-opacity=".45" stroke-width="2"/>
+    <path d="M172 160 C138 180 116 216 112 258 C108 296 120 328 136 350 L156 340 C140 318 130 288 134 258 C138 222 158 194 184 178 Z" fill="url(#gLight)" opacity=".92"/>
+    <path d="M172 160 C138 180 116 216 112 258 C108 296 120 328 136 350" stroke="#A87958" stroke-opacity=".7" stroke-width="4" fill="none"/>
+    <path d="M232 176 L246 320 C247 332 240 340 230 338 L222 334 L224 180 Z" fill="#3A2118" opacity=".8"/>
+    <path d="M226 306 H244 M225 314 H245" stroke="#F5EBDD" stroke-opacity=".45" stroke-width="2"/>
+    <ellipse cx="236" cy="346" rx="9" ry="12" fill="#241409"/>
+  </symbol>
+
+  <!-- 07 · KURTA — kurta, churidar, dupatta across the shoulder -->
+  <symbol id="fig-kurta" viewBox="0 0 400 620">
+    <ellipse cx="200" cy="292" rx="196" ry="272" fill="url(#gGlow)"/>
+    <ellipse cx="200" cy="598" rx="82" ry="12" fill="#1D100B" opacity=".34"/>
+    <path d="M178 404 L172 588 H194 L198 404 Z" fill="#2C190F"/>
+    <path d="M202 404 L206 588 H228 L222 404 Z" fill="#241409"/>
+    <path d="M172 548 H196 M172 560 H196 M172 572 H196 M204 548 H228 M204 560 H228 M204 572 H228" stroke="#F5EBDD" stroke-opacity=".18" stroke-width="1.4"/>
+    <path d="M168 588 H196 L198 602 H164 Z" fill="#120906"/>
+    <path d="M204 588 H230 L234 602 H202 Z" fill="#120906"/>
+    <circle cx="203" cy="66" r="15" fill="#1D100B"/>
+    <path d="M176 110 C172 76 185 62 202 62 C221 62 234 76 230 110 C226 88 217 80 202 80 C187 80 180 88 176 110 Z" fill="#120906"/>
+    <ellipse cx="201" cy="106" rx="25" ry="32" fill="#3A2118"/>
+    <rect x="192" y="130" width="18" height="24" fill="#2C190F"/>
+    <path d="M200 152 C180 152 168 162 166 178 L158 412 L242 412 L234 178 C232 162 220 152 200 152 Z" fill="url(#gLight)"/>
+    <path d="M176 182 L166 408 L196 408 L194 182 Z" fill="#FFF9F0" opacity=".22"/>
+    <path d="M226 182 L234 408 L242 412 L234 178 Z" fill="#6F4937" opacity=".30"/>
+    <path d="M200 168 V300" stroke="#A87958" stroke-opacity=".55" stroke-width="1.4"/>
+    <path d="M162 350 L166 412 M238 350 L234 412" stroke="#6F4937" stroke-opacity=".5" stroke-width="1.4"/>
+    <path d="M170 158 L238 302 L252 386 L232 392 L218 312 L154 178 Z" fill="url(#gTone)" opacity=".92"/>
+    <path d="M170 158 L238 302 L252 386" stroke="#A87958" stroke-opacity=".75" stroke-width="4" fill="none"/>
+    <path d="M166 178 L154 330 C153 342 160 350 170 348 L180 344 L182 184 Z" fill="#EFDCC4"/>
+    <ellipse cx="164" cy="356" rx="9" ry="12" fill="#2C190F"/>
+    <ellipse cx="240" cy="400" rx="9" ry="12" fill="#2C190F"/>
+  </symbol>
+</svg>
+
+<div id="page">
+
+  <!-- ==================== HERO ==================== -->
+  <section class="hero" id="hero">
+    <div class="hero-inner">
+
+      <div class="hero-meta label">
+        <div>Maison Christo</div>
+        <div>Autumn — Winter MMXXVI</div>
+      </div>
+
+      <h2 class="hero-brand" id="heroBrand">CHRISTO</h2>
+
+      <div class="stage" id="stage">
+        <div class="tilt" id="tilt">
+          <div class="obj" id="obj">
+            <div class="echo" id="echo"></div>
+            <svg viewBox="0 0 300 520" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <defs>
+                <linearGradient id="body" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#F3E2CE"/>
+                  <stop offset="26%" stop-color="#C49A7A"/>
+                  <stop offset="58%" stop-color="#6F4937"/>
+                  <stop offset="86%" stop-color="#2C190F"/>
+                  <stop offset="100%" stop-color="#1D100B"/>
+                </linearGradient>
+                <linearGradient id="edge" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#FFF9F0" stop-opacity=".85"/>
+                  <stop offset="16%" stop-color="#FFF9F0" stop-opacity="0"/>
+                  <stop offset="84%" stop-color="#FFF9F0" stop-opacity="0"/>
+                  <stop offset="100%" stop-color="#A87958" stop-opacity=".65"/>
+                </linearGradient>
+                <linearGradient id="fold" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#FFF9F0" stop-opacity="0"/>
+                  <stop offset="50%" stop-color="#FFF9F0" stop-opacity=".38"/>
+                  <stop offset="100%" stop-color="#1D100B" stop-opacity=".28"/>
+                </linearGradient>
+                <clipPath id="form">
+                  <path d="M150 8 C214 8 254 56 254 122 L254 470 C254 496 236 512 208 512 L92 512 C64 512 46 496 46 470 L46 122 C46 56 86 8 150 8 Z"/>
+                </clipPath>
+              </defs>
+
+              <g clip-path="url(#form)">
+                <rect width="300" height="520" fill="url(#body)"/>
+                <path d="M96 8 C88 180 104 330 84 512 L128 512 C142 320 128 168 140 8 Z" fill="url(#fold)" opacity=".55"/>
+                <path d="M186 8 C176 190 196 344 176 512 L214 512 C232 330 210 176 220 8 Z" fill="url(#fold)" opacity=".35"/>
+                <ellipse cx="118" cy="120" rx="86" ry="120" fill="#FFF9F0" opacity=".20"/>
+                <ellipse cx="236" cy="404" rx="90" ry="180" fill="#1D100B" opacity=".38"/>
+                <rect width="300" height="520" fill="url(#edge)"/>
+                <rect x="46" y="246" width="208" height="2" fill="#FFF9F0" opacity=".30"/>
+                <rect x="46" y="252" width="208" height="1" fill="#1D100B" opacity=".35"/>
+              </g>
+              <path d="M150 8 C214 8 254 56 254 122 L254 470 C254 496 236 512 208 512 L92 512 C64 512 46 496 46 470 L46 122 C46 56 86 8 150 8 Z"
+                    fill="none" stroke="#FFF9F0" stroke-opacity=".28" stroke-width="1"/>
+            </svg>
+          </div>
+          <div class="obj-shadow"></div>
+        </div>
+      </div>
+
+      <div class="plate hero-plate" id="heroPlate">
+        <div class="surf s-silk"></div>
+        <svg class="figure" viewBox="0 0 400 620" preserveAspectRatio="xMidYMax slice"><use href="#fig-saree"/></svg>
+        <img class="shot" data-slot="hero" alt="Campaign look, hand-woven silk saree">
+        <div class="glare"></div><div class="vig"></div>
+      </div>
+
+      <div class="hero-head" id="heroHead">
+        <h1>
+          <span class="line"><span>CRAFTED FOR</span></span>
+          <span class="line"><span>THE UNFORGETTABLE.</span></span>
+        </h1>
+        <p class="sub">Drape and tailoring under one roof — handwoven silk from the loom, coats cut to the millimetre.</p>
+      </div>
+
+      <a class="cta magnet" href="#collection" id="cta">
+        <i class="fill"></i>
+        <span>Explore collection</span>
+        <svg width="18" height="8" viewBox="0 0 18 8" fill="none" stroke="currentColor" stroke-width="1">
+          <path d="M0 4h16M13 1l3 3-3 3"/>
+        </svg>
+      </a>
+
+      <div class="cue">
+        <div class="rail"><i></i></div>
+        <div class="label">Scroll</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== DETAIL ==================== -->
+  <section class="detail" id="detail">
+    <h2 class="detail-title" id="detailTitle">THE ART<br>OF DETAIL.</h2>
+    <div class="detail-grid">
+      <div class="plate detail-a" id="detailA">
+        <div class="surf s-hide"></div>
+        <img class="shot" data-slot="detailA" alt="Model in a tailored coat"><div class="glare"></div><div class="vig"></div>
+      </div>
+      <div class="plate detail-b" id="detailB">
+        <div class="surf s-cash"></div>
+        <img class="shot" data-slot="detailB" alt="Model in a handwoven drape"><div class="glare"></div>
+      </div>
+      <div class="detail-copy reveal-copy">
+        <p>Every element is considered.<br>Every texture has a purpose.<br>Every piece tells a story.</p>
+        <div class="meta">
+          <i><span>Atelier</span><span>Hitech City, Mancherial</span></i>
+          <i><span>Material</span><span>Handloom silk, mulberry</span></i>
+          <i><span>Finish</span><span>Hand-drawn zari, 11 days</span></i>
+          <i><span>Edition</span><span>40 pieces</span></i>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== REVEAL ==================== -->
+  <section class="reveal" id="reveal">
+    <div class="plate reveal-frame" id="revealFrame">
+      <div class="surf s-smoke" id="revealSurf"></div>
+      <img class="shot" data-slot="reveal" alt="Campaign portrait"><div class="glare"></div><div class="vig"></div>
+    </div>
+    <div class="reveal-head"><h2 id="revealHead">MADE TO<br>BE SEEN.</h2></div>
+    <div class="reveal-cap label" id="revealCap">Campaign — Chapter II</div>
+  </section>
+
+  <!-- ==================== COLLECTION ==================== -->
+  <section class="collection" id="collection">
+    <div class="col-head">
+      <span class="label">The Collection — Womenswear</span>
+      <span class="label">Seven pieces · Drape, Tailoring &amp; Objects</span>
+    </div>
+
+    <a class="item" href="#">
+      <div>
+        <div class="idx">CHRISTO / 01</div>
+        <h3>VEIL &amp; DRAPE</h3>
+      </div>
+      <span class="kind">Saree — handwoven silk</span>
+      <div class="plate peek">
+        <div class="surf s-dune"></div>
+        <svg class="figure" viewBox="0 0 400 620" preserveAspectRatio="xMidYMax slice"><use href="#fig-saree"/></svg>
+        <img class="shot" data-slot="01" alt="Saree, handwoven silk">
+        <div class="glare"></div><div class="vig"></div>
+      </div>
+    </a>
+
+    <a class="item" href="#">
+      <div>
+        <div class="idx">CHRISTO / 02</div>
+        <h3>MEHFIL</h3>
+      </div>
+      <span class="kind">Lehenga — festive</span>
+      <div class="plate peek">
+        <div class="surf s-bronze"></div>
+        <svg class="figure" viewBox="0 0 400 620" preserveAspectRatio="xMidYMax slice"><use href="#fig-lehenga"/></svg>
+        <img class="shot" data-slot="02" alt="Festive lehenga">
+        <div class="glare"></div><div class="vig"></div>
+      </div>
+    </a>
+
+    <a class="item" href="#">
+      <div>
+        <div class="idx">CHRISTO / 03</div>
+        <h3>COURTYARD</h3>
+      </div>
+      <span class="kind">Silk drape — day</span>
+      <div class="plate peek">
+        <div class="surf s-cash"></div>
+        <svg class="figure" viewBox="0 0 400 620" preserveAspectRatio="xMidYMax slice"><use href="#fig-kurta"/></svg>
+        <img class="shot" data-slot="03" alt="Silk drape">
+        <div class="glare"></div><div class="vig"></div>
+      </div>
+    </a>
+
+    <a class="item" href="#">
+      <div>
+        <div class="idx">CHRISTO / 04</div>
+        <h3>ESSENTIAL FORM</h3>
+      </div>
+      <span class="kind">Wrap coat — outerwear</span>
+      <div class="plate peek">
+        <div class="surf s-hide"></div>
+        <svg class="figure" viewBox="0 0 400 620" preserveAspectRatio="xMidYMax slice"><use href="#fig-coat"/></svg>
+        <img class="shot" data-slot="04" alt="Wrap coat">
+        <div class="glare"></div><div class="vig"></div>
+      </div>
+    </a>
+
+    <a class="item" href="#">
+      <div>
+        <div class="idx">CHRISTO / 05</div>
+        <h3>NOIR</h3>
+      </div>
+      <span class="kind">Evening gown</span>
+      <div class="plate peek">
+        <div class="surf s-smoke"></div>
+        <svg class="figure" viewBox="0 0 400 620" preserveAspectRatio="xMidYMax slice"><use href="#fig-noir"/></svg>
+        <img class="shot" data-slot="05" alt="Evening gown">
+        <div class="glare"></div><div class="vig"></div>
+      </div>
+    </a>
+
+    <a class="item" href="#">
+      <div>
+        <div class="idx">CHRISTO / 06</div>
+        <h3>THE CARRY</h3>
+      </div>
+      <span class="kind">Handbag — full-grain leather</span>
+      <div class="plate peek">
+        <div class="surf s-hide"></div>
+        <svg class="figure" viewBox="0 0 400 620" preserveAspectRatio="xMidYMax slice"><use href="#fig-archive"/></svg>
+        <img class="shot" data-slot="06" alt="Leather handbag">
+        <div class="glare"></div><div class="vig"></div>
+      </div>
+    </a>
+
+    <a class="item" href="#">
+      <div>
+        <div class="idx">CHRISTO / 07</div>
+        <h3>HEIRLOOM</h3>
+      </div>
+      <span class="kind">Jewellery — gold set</span>
+      <div class="plate peek">
+        <div class="surf s-bronze"></div>
+        <svg class="figure" viewBox="0 0 400 620" preserveAspectRatio="xMidYMax slice"><use href="#fig-archive"/></svg>
+        <img class="shot" data-slot="07" alt="Gold necklace and earrings">
+        <div class="glare"></div><div class="vig"></div>
+      </div>
+    </a>
+  </section>
+
+  <!-- ==================== HORIZONTAL ==================== -->
+  <section class="horizontal" id="horizontal">
+    <div class="h-word" id="hWord">CHRISTO — ARCHIVE — CHRISTO — ARCHIVE</div>
+    <div class="h-track" id="hTrack">
+      <div class="plate h-panel"><div class="surf s-silk"></div><svg class="figure" viewBox="0 0 400 620" preserveAspectRatio="xMidYMax slice"><use href="#fig-saree"/></svg><img class="shot" data-slot="h1" alt="Campaign frame"><div class="glare"></div><div class="vig"></div>
+        <div class="cap"><span>Image 01</span><span>Saree, posed</span></div></div>
+      <div class="plate h-panel"><div class="surf s-bronze"></div><svg class="figure" viewBox="0 0 400 620" preserveAspectRatio="xMidYMax slice"><use href="#fig-lehenga"/></svg><img class="shot" data-slot="h2" alt="Campaign frame"><div class="glare"></div><div class="vig"></div>
+        <div class="cap"><span>Image 02</span><span>Midi, structured</span></div></div>
+      <div class="plate h-panel"><div class="surf s-dune"></div><svg class="figure" viewBox="0 0 400 620" preserveAspectRatio="xMidYMax slice"><use href="#fig-suit"/></svg><img class="shot" data-slot="h3" alt="Campaign frame"><div class="glare"></div><div class="vig"></div>
+        <div class="cap"><span>Image 03</span><span>Festive, outdoors</span></div></div>
+      <div class="plate h-panel"><div class="surf s-hide"></div><svg class="figure" viewBox="0 0 400 620" preserveAspectRatio="xMidYMax slice"><use href="#fig-noir"/></svg><img class="shot" data-slot="h4" alt="Campaign frame"><div class="glare"></div><div class="vig"></div>
+        <div class="cap"><span>Image 04</span><span>Trench, winter</span></div></div>
+    </div>
+    <p class="h-note">Four frames from the winter campaign — six yards and a shoulder seam, shot in a room with one window.</p>
+  </section>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer id="footer">
+    <h2 class="f-mark" id="fMark"></h2>
+    <div class="f-rows">
+      <ul>
+        <li><a href="#collection">Collection</a></li>
+        <li><a href="#detail">Story</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+      <ul>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">Privacy</a></li>
+        <li><a href="#">Terms</a></li>
+      </ul>
+      <div class="f-contact">
+        <span class="label">Contact</span>
+        <a href="tel:+919866867744">+91 98668 67744</a>
+        <a href="mailto:christostore20@gmail.com">christostore20@gmail.com</a>
+      </div>
+      <div class="f-contact">
+        <span class="label">Atelier</span>
+        <address>
+          Hitech City, Mancherial<br>
+          Telangana 504208<br>
+          India
+        </address>
+        <span class="hours">By appointment</span>
+      </div>
+    </div>
+    <div class="f-base label"><span>© 2026 CHRISTO</span><span>Photography — Unsplash contributors</span></div>
+  </footer>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lenis/1.1.14/lenis.min.js"></script>
+<script>
+(function(){
+"use strict";
+
+var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+var hasGSAP = !!(window.gsap && window.ScrollTrigger);
+if (hasGSAP) gsap.registerPlugin(ScrollTrigger);
+
+/* ============================================================
+   YOUR PHOTOGRAPHY GOES HERE.
+   Drop files next to this page (or paste any full URL) and the
+   drawn figure steps aside automatically. Leave a slot empty and
+   the illustration stays. Shoot vertical, roughly 3:4.
+   ============================================================ */
+var SHOTS = {
+  "hero":     "https://images.unsplash.com/photo-1727430228383-aa1fb59db8bf?q=80&w=1400&auto=format&fit=crop", // saree
+  "detailA":  "https://images.unsplash.com/photo-1490114538077-0a7f8cb49891?q=80&w=1600&auto=format&fit=crop", // tailored coat
+  "detailB":  "https://images.unsplash.com/photo-1614881064213-180b1c28f743?q=80&w=1000&auto=format&fit=crop", // silk saree
+  "reveal":   "https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=1800&auto=format&fit=crop", // campaign
+  "01":       "https://images.unsplash.com/photo-1610030469839-f909584b43f1?q=80&w=900&auto=format&fit=crop", // saree
+  "02":       "https://images.unsplash.com/photo-1633685894176-9f715a092b79?q=80&w=900&auto=format&fit=crop", // lehenga
+  "03":       "https://images.unsplash.com/photo-1684961415565-80383f48c0c2?q=80&w=900&auto=format&fit=crop", // silk drape
+  "04":       "https://images.unsplash.com/photo-1539533018447-63fcce2678e3?q=80&w=900&auto=format&fit=crop", // wrap coat
+  "05":       "https://images.unsplash.com/photo-1566174053879-31528523f8ae?q=80&w=900&auto=format&fit=crop", // evening gown
+  "06":       "https://images.unsplash.com/photo-1589363358751-ab05797e5629?q=80&w=900&auto=format&fit=crop", // handbag
+  "07":       "https://images.unsplash.com/photo-1758995115682-1452a1a9e35b?q=80&w=900&auto=format&fit=crop", // jewellery
+  "h1":       "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?q=80&w=1100&auto=format&fit=crop", // saree
+  "h2":       "https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=1100&auto=format&fit=crop", // midi dress
+  "h3":       "https://images.unsplash.com/photo-1615886753866-79396abc446e?q=80&w=1100&auto=format&fit=crop", // festive drape
+  "h4":       "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?q=80&w=1100&auto=format&fit=crop", // trench
+};
+
+/* ---------- utilities ------------------------------------- */
+function $(s,c){return (c||document).querySelector(s);}
+function $$(s,c){return Array.prototype.slice.call((c||document).querySelectorAll(s));}
+var isTouch = window.matchMedia("(hover: none)").matches || window.innerWidth < 900;
+
+// split a string into per-letter spans (for the loader + footer marks)
+function letters(el, text){
+  el.innerHTML = "";
+  return text.split("").map(function(ch){
+    var s = document.createElement("span");
+    s.textContent = ch;
+    el.appendChild(s);
+    return s;
+  });
+}
+// wrap words of a heading in masked lines for reveal
+function maskWords(el){
+  var out = [];
+  el.innerHTML = el.innerHTML.split("<br>").map(function(part){
+    return '<span class="line"><span>' + part.trim() + '</span></span>';
+  }).join("");
+  $$(".line > span", el).forEach(function(s){ out.push(s); });
+  return out;
+}
+
+/* ---------- load whatever photography is configured -------- */
+function loadShots(){
+  Array.prototype.forEach.call(document.querySelectorAll(".shot"), function(img){
+    var src = SHOTS[img.getAttribute("data-slot")];
+    if (!src) return;
+    img.addEventListener("load", function(){
+      img.classList.add("is-loaded");
+      img.closest(".plate").classList.add("has-shot");
+    });
+    img.addEventListener("error", function(){
+      // photo missing or blocked — keep the drawn figure, say so once
+      if (!window.__shotWarned){
+        window.__shotWarned = true;
+        console.warn("CHRISTO: an image in SHOTS could not load; the illustration is showing instead.");
+      }
+    });
+    img.loading = "lazy";
+    img.decoding = "async";
+    img.src = src;
+  });
+}
+loadShots();
+
+/* ---------- smooth scroll --------------------------------- */
+var lenis = null;
+if (window.Lenis && !reduce && hasGSAP){
+  lenis = new Lenis({ lerp: 0.085, wheelMultiplier: 1, smoothWheel: true, syncTouch: false });
+  lenis.on("scroll", ScrollTrigger.update);
+  gsap.ticker.add(function(t){ lenis.raf(t * 1000); });
+  gsap.ticker.lagSmoothing(0);
+}
+// anchor links routed through the smooth scroller
+$$('a[href^="#"]').forEach(function(a){
+  a.addEventListener("click", function(e){
+    var id = a.getAttribute("href");
+    if (id.length < 2) return;
+    var target = document.querySelector(id);
+    if (!target) return;
+    e.preventDefault();
+    if (lenis) lenis.scrollTo(target, { offset: 0, duration: 1.6 });
+    else target.scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
+  });
+});
+
+/* ============================================================
+   1. BACKGROUND MORPHING  (continuous, not per-section)
+   ============================================================ */
+var BG = [
+  { p:0.00, c:"#F5EBDD" },
+  { p:0.14, c:"#FFF9F0" },
+  { p:0.30, c:"#C49A7A" },
+  { p:0.48, c:"#6F4937" },
+  { p:0.72, c:"#3A2118" },
+  { p:1.00, c:"#1D100B" }
+];
+var INK = [
+  { p:0.00, c:"#1D100B" },
+  { p:0.40, c:"#1D100B" },
+  { p:0.52, c:"#FFF9F0" },
+  { p:1.00, c:"#F5EBDD" }
+];
+function sample(stops, prog){
+  for (var i = 0; i < stops.length - 1; i++){
+    var a = stops[i], b = stops[i+1];
+    if (prog <= b.p || i === stops.length - 2){
+      var t = (prog - a.p) / (b.p - a.p);
+      t = Math.max(0, Math.min(1, t));
+      return hasGSAP ? gsap.utils.interpolate(a.c, b.c, t) : b.c;
+    }
+  }
+  return stops[stops.length-1].c;
+}
+var root = document.documentElement;
+function paint(prog){
+  root.style.setProperty("--bg", sample(BG, prog));
+  root.style.setProperty("--ink", sample(INK, prog));
+}
+paint(0);
+
+/* ============================================================
+   2. LOADING EXPERIENCE
+   ============================================================ */
+var loadLetters = letters($("#loadMark"), "CHRISTO");
+var pct = $("#pct");
+function boot(){
+  document.body.classList.remove("lock");
+  if (!isTouch && window.matchMedia("(hover: hover)").matches) document.body.classList.add("has-cursor");
+  if (hasGSAP) ScrollTrigger.refresh();
+  build();
+}
+if (!hasGSAP || reduce){
+  $("#loader").style.display = "none";
+  $("#curtain").style.display = "none";
+  boot();
+} else {
+  var counter = { v:0 };
+  var intro = gsap.timeline({ onComplete: boot });
+  intro.to(loadLetters, { y:0, duration:1, stagger:0.045, ease:"expo.out" })
+       .to("#loader .bar i", { scaleX:1, duration:1.15, ease:"power2.inOut" }, 0.15)
+       .to(counter, {
+          v:100, duration:1.15, ease:"power2.inOut",
+          onUpdate:function(){ pct.textContent = String(Math.round(counter.v)).padStart(3,"0"); }
+        }, 0.15)
+       .to(loadLetters, { y:"-110%", duration:0.7, stagger:0.03, ease:"expo.inOut" }, "+=0.12")
+       .to("#loader .bar, #loader .pct", { opacity:0, duration:0.4 }, "<")
+       .to("#loader", { yPercent:-100, duration:1.0, ease:"expo.inOut" }, "-=0.25")
+       .to("#curtain", { scaleY:0, duration:1.1, ease:"expo.inOut" }, "<0.08")
+       .set("#loader, #curtain", { display:"none" });
+}
+
+/* ============================================================
+   3. EVERYTHING ELSE
+   ============================================================ */
+function build(){
+
+  /* ---- footer mark letters ---- */
+  var fLetters = letters($("#fMark"), "CHRISTO");
+  fLetters.forEach(function(s){ if (hasGSAP) gsap.set(s, { yPercent: 110 }); });
+
+  if (!hasGSAP){ paint(0.5); return; }
+
+  /* ---- global scroll: background + progress bar ---- */
+  ScrollTrigger.create({
+    trigger: document.body, start: 0, end: "max",
+    onUpdate: function(self){
+      paint(self.progress);
+      gsap.set("#progress", { scaleX: self.progress });
+    }
+  });
+
+  var mm = gsap.matchMedia();
+
+  /* ==========================================================
+     HERO ENTRANCE — plays once as the loader lifts.
+     Only touches elements the scrub timeline does not own,
+     so nothing fights over the same property.
+     ========================================================== */
+  var brand = $("#heroBrand");
+  brand.innerHTML = "<em>" + brand.textContent.trim() + "</em>";
+  gsap.timeline({ defaults: { ease: "expo.out" } })
+    .from(".obj svg", { yPercent: 8, opacity: 0, duration: 1.6 }, 0)
+    .from(".obj-shadow", { opacity: 0, scaleX: 0.4, duration: 1.4 }, 0.1)
+    .from("#heroBrand em", { yPercent: 34, opacity: 0, duration: 1.5 }, 0.12)
+    .from(".hero-head .line > span", { yPercent: 115, duration: 1.3, stagger: 0.09 }, 0.35)
+    .from(".hero-head .sub", { y: 20, opacity: 0, duration: 1.1 }, 0.62)
+    .from(".hero-meta div", { y: 14, opacity: 0, duration: 1, stagger: 0.08 }, 0.5)
+    .from("#cta span, #cta svg", { y: 16, opacity: 0, duration: 1, stagger: 0.06 }, 0.7)
+    .from(".cue .rail, .cue .label", { opacity: 0, duration: 1, stagger: 0.1 }, 0.9);
+
+  /* ==========================================================
+     HERO — one continuous scrubbed scene
+     ========================================================== */
+  var heroTL = gsap.timeline({
+    scrollTrigger: {
+      trigger: "#hero", start: "top top", end: "+=280%",
+      scrub: 1, pin: true, anticipatePin: 1, invalidateOnRefresh: true
+    },
+    defaults: { ease: "none" }
+  });
+
+  // 1–2 · brand drifts up and back, headline recedes in Z
+  heroTL.to("#heroBrand", { yPercent: -46, scale: 0.82, z: -420, opacity: 0.35 }, 0)
+        .to("#heroHead",  { z: -900, y: -70, opacity: 0, filter: "blur(3px)" }, 0)
+        .to(".hero-meta, .cue", { opacity: 0, duration: 0.12 }, 0)
+        .to("#cta", { opacity: 0, y: 30, duration: 0.16 }, 0)
+  // 3–5 · the object turns, grows, camera pushes in
+        .to("#obj", { rotateY: 44, rotateZ: -2.5, duration: 0.7 }, 0)
+        .to("#stage", { scale: 1.42, z: 220, duration: 0.55 }, 0)
+        .to(".obj-shadow", { scaleX: 1.3, opacity: 0.35, duration: 0.55 }, 0)
+  // 8 · object clears to the right
+        .to("#stage", { xPercent: 34, yPercent: -4, scale: 1.16, duration: 0.45 }, 0.55)
+        .to("#obj", { rotateY: 66, duration: 0.45 }, 0.55)
+  // 9 · second image enters from the left, behind it
+        .fromTo("#heroPlate",
+          { xPercent: -130, opacity: 0, rotateY: 16, scale: 0.9 },
+          { xPercent: 0, opacity: 1, rotateY: 0, scale: 1, duration: 0.45 }, 0.52)
+        .to("#heroPlate .surf, #heroPlate .figure, #heroPlate .shot", { scale: 1.14, duration: 0.45 }, 0.52)
+  // 11 · the whole scene hands off to the next section
+        .to(".hero-inner", { yPercent: -12, opacity: 0.15, duration: 0.25 }, 0.78);
+
+  // hero object: subtle mouse response (desktop only)
+  mm.add("(hover: hover) and (min-width: 901px)", function(){
+    var rx = gsap.quickTo("#tilt", "rotateX", { duration: 0.9, ease: "power3" });
+    var ry = gsap.quickTo("#tilt", "rotateY", { duration: 0.9, ease: "power3" });
+    var px = gsap.quickTo("#echo", "x", { duration: 1.1, ease: "power3" });
+    function move(e){
+      var nx = (e.clientX / window.innerWidth  - 0.5);
+      var ny = (e.clientY / window.innerHeight - 0.5);
+      rx(-ny * 9); ry(nx * 13); px(nx * -26);
+    }
+    window.addEventListener("mousemove", move);
+    return function(){ window.removeEventListener("mousemove", move); };
+  });
+
+  /* ==========================================================
+     DETAIL — magazine spread in motion
+     ========================================================== */
+  gsap.to("#detailTitle", {
+    xPercent: -14, ease: "none",
+    scrollTrigger: { trigger: "#detail", start: "top bottom", end: "bottom top", scrub: 1 }
+  });
+  gsap.fromTo("#detailA .surf, #detailA .shot", { scale: 1.32, yPercent: -6 }, {
+    scale: 1, yPercent: 4, ease: "none",
+    scrollTrigger: { trigger: "#detailA", start: "top bottom", end: "bottom top", scrub: 1 }
+  });
+  gsap.fromTo("#detailB", { yPercent: 22 }, {
+    yPercent: -26, ease: "none",
+    scrollTrigger: { trigger: "#detail", start: "top bottom", end: "bottom top", scrub: 1 }
+  });
+  gsap.fromTo("#detailB .surf, #detailB .shot", { scale: 1.2 }, {
+    scale: 1.02, ease: "none",
+    scrollTrigger: { trigger: "#detailB", start: "top bottom", end: "bottom top", scrub: 1 }
+  });
+
+  // metadata + copy reveal
+  gsap.from("#detail .detail-copy p, #detail .meta i", {
+    yPercent: 60, opacity: 0, duration: 1.1, stagger: 0.07, ease: "expo.out",
+    scrollTrigger: { trigger: ".detail-copy", start: "top 82%" }
+  });
+
+  /* ==========================================================
+     REVEAL — small → fullscreen
+     ========================================================== */
+  var revealHead = maskWords($("#revealHead"));
+  var revTL = gsap.timeline({
+    scrollTrigger: {
+      trigger: "#reveal", start: "top top", end: "+=220%",
+      scrub: 1, pin: true, anticipatePin: 1, invalidateOnRefresh: true
+    },
+    defaults: { ease: "none" }
+  });
+  revTL.fromTo("#revealFrame",
+        { scale: window.innerWidth < 760 ? 0.4 : 0.26 },
+        { scale: 1, duration: 0.72 }, 0)
+       .fromTo("#revealSurf, #reveal .shot", { scale: 1.5 }, { scale: 1, duration: 0.72 }, 0)
+       .fromTo(revealHead, { yPercent: 115 }, { yPercent: 0, duration: 0.3, stagger: 0.06, ease: "expo.out" }, 0.32)
+       .to("#revealCap", { opacity: 0, duration: 0.2 }, 0.3)
+       .to("#revealFrame", { scale: 1.08, duration: 0.28 }, 0.72)
+       .to(revealHead, { yPercent: -110, duration: 0.22, stagger: 0.04 }, 0.8);
+
+  /* ==========================================================
+     COLLECTION — editorial rows
+     ========================================================== */
+  $$(".item").forEach(function(item, i){
+    var h3 = $("h3", item);
+    gsap.from(item, {
+      yPercent: 18, opacity: 0, duration: 1.2, ease: "expo.out",
+      scrollTrigger: { trigger: item, start: "top 88%" }
+    });
+
+    var peek = $(".peek", item);
+    if (!peek) return;
+
+    mm.add("(hover: hover) and (min-width: 761px)", function(){
+      var toX = gsap.quickTo(peek, "x", { duration: 0.9, ease: "power3" });
+      var toY = gsap.quickTo(peek, "y", { duration: 0.9, ease: "power3" });
+      function enter(){
+        gsap.to(peek, { opacity: 1, scale: 1, duration: 0.7, ease: "expo.out" });
+        gsap.to($$(".surf, .figure, .shot", peek), { scale: 1.12, duration: 1.4, ease: "power2.out" });
+        setCursor("view");
+      }
+      function leave(){
+        gsap.to(peek, { opacity: 0, scale: 0.86, duration: 0.5, ease: "power2.out" });
+        gsap.to($$(".surf, .figure, .shot", peek), { scale: 1, duration: 0.8 });
+        setCursor(null);
+      }
+      function move(e){
+        var r = item.getBoundingClientRect();
+        toX((e.clientX - r.left - r.width * 0.86) * 0.16);
+        toY((e.clientY - r.top - r.height / 2) * 0.34 - r.height / 2);
+      }
+      item.addEventListener("mouseenter", enter);
+      item.addEventListener("mouseleave", leave);
+      item.addEventListener("mousemove", move);
+      return function(){
+        item.removeEventListener("mouseenter", enter);
+        item.removeEventListener("mouseleave", leave);
+        item.removeEventListener("mousemove", move);
+      };
+    });
+  });
+
+  /* ==========================================================
+     HORIZONTAL — vertical scroll drives lateral travel
+     ========================================================== */
+  var track = $("#hTrack");
+  var distance = function(){ return Math.max(0, track.scrollWidth - window.innerWidth); };
+  gsap.to(track, {
+    x: function(){ return -distance(); },
+    ease: "none",
+    scrollTrigger: {
+      trigger: "#horizontal", start: "top top",
+      end: function(){ return "+=" + (distance() + window.innerHeight * 0.6); },
+      scrub: 1, pin: true, anticipatePin: 1, invalidateOnRefresh: true
+    }
+  });
+  gsap.to("#hWord", {
+    xPercent: -52, ease: "none",
+    scrollTrigger: {
+      trigger: "#horizontal", start: "top top",
+      end: function(){ return "+=" + (distance() + window.innerHeight * 0.6); },
+      scrub: 1, invalidateOnRefresh: true
+    }
+  });
+  $$(".h-panel .surf, .h-panel .figure, .h-panel .shot").forEach(function(s){
+    gsap.fromTo(s, { scale: 1.18, xPercent: -4 }, {
+      scale: 1, xPercent: 4, ease: "none",
+      scrollTrigger: {
+        trigger: "#horizontal", start: "top top",
+        end: function(){ return "+=" + (distance() + window.innerHeight * 0.6); },
+        scrub: 1, invalidateOnRefresh: true
+      }
+    });
+  });
+
+  /* ==========================================================
+     FOOTER — the last frame of the film
+     ========================================================== */
+  gsap.to(fLetters, {
+    yPercent: 0, duration: 1.3, stagger: 0.05, ease: "expo.out",
+    scrollTrigger: { trigger: "#fMark", start: "top 85%" }
+  });
+  gsap.from(".f-rows > *", {
+    y: 34, opacity: 0, duration: 1, stagger: 0.08, ease: "expo.out",
+    scrollTrigger: { trigger: ".f-rows", start: "top 90%" }
+  });
+
+  /* ==========================================================
+     CUSTOM CURSOR + MAGNETIC BUTTONS (desktop only)
+     ========================================================== */
+  var cursor = $("#cursor"), curIn = $("#curIn");
+  function setCursor(mode){
+    if (!document.body.classList.contains("has-cursor")) return;
+    if (mode === "view"){
+      gsap.to(cursor, { width: 92, height: 92, margin: "-46px 0 0 -46px", borderColor: "transparent", duration: 0.5, ease: "expo.out" });
+      gsap.to(curIn, { opacity: 1, scale: 1, duration: 0.5, ease: "expo.out" });
+    } else if (mode === "link"){
+      gsap.to(cursor, { width: 44, height: 44, margin: "-22px 0 0 -22px", duration: 0.5, ease: "expo.out" });
+      gsap.to(curIn, { opacity: 0, scale: 0.2, duration: 0.3 });
+    } else {
+      gsap.to(cursor, { width: 14, height: 14, margin: "-7px 0 0 -7px", borderColor: "currentColor", duration: 0.5, ease: "expo.out" });
+      gsap.to(curIn, { opacity: 0, scale: 0.2, duration: 0.3 });
+    }
+  }
+  window.setCursor = setCursor;
+
+  mm.add("(hover: hover) and (min-width: 901px)", function(){
+    var cx = gsap.quickTo(cursor, "x", { duration: 0.42, ease: "power3" });
+    var cy = gsap.quickTo(cursor, "y", { duration: 0.42, ease: "power3" });
+    function move(e){ cx(e.clientX); cy(e.clientY); }
+    window.addEventListener("mousemove", move);
+
+    var links = $$("a:not(.item), button");
+    function on(){ setCursor("link"); }
+    function off(){ setCursor(null); }
+    links.forEach(function(l){
+      l.addEventListener("mouseenter", on);
+      l.addEventListener("mouseleave", off);
+    });
+
+    // magnetic
+    var magnets = $$(".magnet");
+    var cleanups = magnets.map(function(m){
+      var mx = gsap.quickTo(m, "x", { duration: 0.6, ease: "power3" });
+      var my = gsap.quickTo(m, "y", { duration: 0.6, ease: "power3" });
+      var ax = gsap.quickTo($("svg", m), "x", { duration: 0.6, ease: "power3" });
+      function mg(e){
+        var r = m.getBoundingClientRect();
+        var dx = e.clientX - (r.left + r.width / 2);
+        var dy = e.clientY - (r.top + r.height / 2);
+        var dist = Math.hypot(dx, dy);
+        if (dist < 190){ mx(dx * 0.28); my(dy * 0.34); ax(dx * 0.06); }
+        else { mx(0); my(0); ax(0); }
+      }
+      window.addEventListener("mousemove", mg);
+      return function(){ window.removeEventListener("mousemove", mg); };
+    });
+
+    return function(){
+      window.removeEventListener("mousemove", move);
+      links.forEach(function(l){
+        l.removeEventListener("mouseenter", on);
+        l.removeEventListener("mouseleave", off);
+      });
+      cleanups.forEach(function(fn){ fn(); });
+      document.body.classList.remove("has-cursor");
+    };
+  });
+
+  /* ---- housekeeping ---- */
+  var rt;
+  window.addEventListener("resize", function(){
+    clearTimeout(rt);
+    rt = setTimeout(function(){ ScrollTrigger.refresh(); }, 220);
+  });
+  ScrollTrigger.refresh();
+}
+})();
+</script>
+</body>
+</html>
